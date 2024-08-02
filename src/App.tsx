@@ -1,14 +1,12 @@
-import { Layout } from 'antd';
-
-const { Content } = Layout;
+import { StyledContent, StyledLayout } from '@lib/theme/components/Layout';
 
 function App() {
   return (
-    <Layout>
-      <Content>
+    <StyledLayout>
+      <StyledContent>
         <div>Coin Routes</div>
-      </Content>
-    </Layout>
+      </StyledContent>
+    </StyledLayout>
   );
 }
 
