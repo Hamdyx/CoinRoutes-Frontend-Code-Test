@@ -2,6 +2,7 @@ import { Card, Divider, Flex, Typography } from 'antd';
 import styled from 'styled-components';
 
 import themeToken from '@lib/theme/tokens';
+import { formatNumber } from '@/utils/formatNumbers';
 
 const { Title, Text } = Typography;
 
@@ -30,7 +31,7 @@ function AskBidCard({ cardTitle, price, priceTitle, quantity, quantityTitle, bac
     <StyledCard title={cardTitle} background={background}>
       <Flex justify="space-between">
         <Flex vertical>
-          <Title level={4}>{price}</Title>
+          <Title level={4}>{formatNumber(price)}</Title>
           <Text>{priceTitle}</Text>
         </Flex>
         <Divider
@@ -40,7 +41,7 @@ function AskBidCard({ cardTitle, price, priceTitle, quantity, quantityTitle, bac
           }}
         />
         <Flex vertical>
-          <Title level={4}>{quantity}</Title>
+          <Title level={4}>{formatNumber(quantity)}</Title>
           <Text>{quantityTitle}</Text>
         </Flex>
       </Flex>
