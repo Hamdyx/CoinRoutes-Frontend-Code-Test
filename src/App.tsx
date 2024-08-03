@@ -1,10 +1,11 @@
 import { StyledContent, StyledLayout } from '@lib/theme/components/Layout';
+import CoinView from '@/features/coinView/views/CoinView';
 
 function App() {
   return (
     <StyledLayout>
       <StyledContent>
-        <div>Coin Routes</div>
+        <CoinView />
       </StyledContent>
     </StyledLayout>
   );
