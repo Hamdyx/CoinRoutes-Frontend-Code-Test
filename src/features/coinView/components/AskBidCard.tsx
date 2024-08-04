@@ -1,4 +1,4 @@
-import { Card, Divider, Flex, Typography } from 'antd';
+import { Card, Divider, Flex, Skeleton, Typography } from 'antd';
 import styled from 'styled-components';
 
 import themeToken from '@lib/theme/tokens';
@@ -19,9 +19,9 @@ const StyledCard = styled(Card)<{ background: 'green' | 'red' }>`
 
 type Props = {
   cardTitle: string;
-  price: number;
+  price: string | number | undefined;
   priceTitle: string;
-  quantity: number;
+  quantity: string | number | undefined;
   quantityTitle: string;
   background?: 'green' | 'red';
 };
@@ -29,9 +29,9 @@ type Props = {
 function AskBidCard({ cardTitle, price, priceTitle, quantity, quantityTitle, background = 'green' }: Props) {
   return (
     <StyledCard title={cardTitle} background={background}>
-      <Flex justify="space-between">
-        <Flex vertical>
-          <Title level={4}>{formatNumber(price)}</Title>
+      <Flex justify="space-between" gap={8}>
+        <Flex vertical flex={1}>
+          {price === undefined ? <Skeleton.Input /> : <Title level={4}>{formatNumber(price)}</Title>}
           <Text>{priceTitle}</Text>
         </Flex>
         <Divider
@@ -40,8 +40,17 @@ function AskBidCard({ cardTitle, price, priceTitle, quantity, quantityTitle, bac
             height: 'auto',
           }}
         />
-        <Flex vertical>
-          <Title level={4}>{formatNumber(quantity)}</Title>
+        <Flex vertical flex={1}>
+          {quantity === undefined ? (
+            <Skeleton.Input />
+          ) : (
+            <Title level={4}>
+              {formatNumber(quantity, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 8,
+              })}
+            </Title>
+          )}
           <Text>{quantityTitle}</Text>
         </Flex>
       </Flex>
