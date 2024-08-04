@@ -20,7 +20,7 @@ export const StyledTable = styled(Table)`
                 background: ${themeToken['gray-10']};
                 font-size: ${themeToken.fontSizeSM}px;
                 & > th {
-                  color: #8c8c8c;
+                  color: ${themeToken['gray-7']};
                   background: ${themeToken['gray-10']};
                   padding: ${themeToken.paddingXS}px;
                 }

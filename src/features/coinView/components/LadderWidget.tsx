@@ -1,7 +1,10 @@
-import { Card } from 'antd';
+import { Card, Typography } from 'antd';
 import styled from 'styled-components';
 
 import LadderTable from './LadderTable';
+import { StyledTextContainer } from './StyledTextContainer';
+
+const { Text } = Typography;
 
 const StyledCard = styled(Card)`
   &.ant-card {
@@ -19,7 +22,15 @@ function LadderWidget() {
   return (
     <StyledCard title="Order Book">
       <LadderTable type="asks" />
+      <StyledTextContainer gap={32}>
+        <Text>USD Spread</Text>
+        <Text>0.01</Text>
+      </StyledTextContainer>
       <LadderTable type="bids" showHeader={false} />
+      <StyledTextContainer gap={32}>
+        <Text>Aggregation</Text>
+        <Text>0.01</Text>
+      </StyledTextContainer>
     </StyledCard>
   );
 }
