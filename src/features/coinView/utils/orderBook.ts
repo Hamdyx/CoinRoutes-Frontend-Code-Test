@@ -1,21 +1,3 @@
-export const orderColumns = [
-  {
-    title: 'Market Size',
-    dataIndex: 'market_size',
-    key: 'market_size',
-  },
-  {
-    title: 'Price (USD)',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: 'My Size',
-    dataIndex: 'my_size',
-    key: 'my_size',
-  },
-];
-
 export const buyOrders = Array(10)
   .fill(0)
   .map((_, i) => ({

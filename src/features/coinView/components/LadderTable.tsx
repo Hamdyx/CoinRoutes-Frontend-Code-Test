@@ -1,48 +1,17 @@
-import { Table } from 'antd';
-import styled from 'styled-components';
+import { StyledTable } from '@/lib/theme/components/Table';
 
-import { buyOrders, orderColumns } from '../utils/orderBook';
+import { buyOrders } from '../utils/orderBook';
 import { getRowStyle } from '../utils/getRowStyle';
+import { ladderTableColumns } from '../utils/ladderTableColumns';
 
-const StyledTable = styled(Table)`
-  &.ant-table-wrapper {
-    .ant-table {
-      & > .ant-table-container {
-        & > .ant-table-content {
-          & > table {
-            & > .ant-table-thead {
-              & > tr {
-                background: #262626;
-                font-size: 12px;
-                & > th {
-                  color: #8c8c8c;
-                  background: #262626;
-                  padding: 8px;
-                }
-              }
-            }
-            & > .ant-table-tbody {
-              background: #262626;
-              color: #fff;
-              & > tr {
-                transition: background-color 0.3s;
-                & > td {
-                  border: 0;
-                  padding: 6px;
-                  &.ant-table-cell-row-hover {
-                    background: unset;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+type Props = {
+  type: 'bids' | 'asks';
+  showHeader?: boolean;
+};
 
-function LadderTable() {
+function LadderTable({ type, showHeader = true }: Props) {
+  const tableColumns = ladderTableColumns(type);
+
   const components = {
     body: {
       row: ({ children, ...restProps }: any) => {
@@ -51,7 +20,7 @@ function LadderTable() {
           <tr
             {...restProps}
             style={{
-              background: getRowStyle(record),
+              background: getRowStyle(record, type),
             }}
           >
             {children}
@@ -63,11 +32,12 @@ function LadderTable() {
 
   return (
     <StyledTable
-      columns={orderColumns}
+      columns={tableColumns}
       dataSource={buyOrders}
       pagination={false}
       components={components}
       rowKey={(record) => record.percentage}
+      showHeader={showHeader}
     />
   );
 }

@@ -1,1 +1,3 @@
-export default {};
+export default {
+  'gray-10': '#262626',
+};
