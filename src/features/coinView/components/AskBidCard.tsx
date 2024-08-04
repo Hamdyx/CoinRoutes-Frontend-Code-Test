@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 
 const StyledCard = styled(Card)<{ background: 'green' | 'red' }>`
   &.ant-card {
-    width: 300px;
+    width: 400px;
     & > .ant-card-head {
       text-align: start;
       background-color: ${(props) => themeToken[props.background]};
