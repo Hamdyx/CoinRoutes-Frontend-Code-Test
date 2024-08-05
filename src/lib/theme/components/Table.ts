@@ -9,8 +9,9 @@ export const tableTheme = {
   ...defaultTheme,
 };
 
-export const StyledTable = styled(Table)`
+export const StyledTable = styled(Table)<{ showHeader: boolean }>`
   &.ant-table-wrapper {
+    min-height: ${(props) => (props.showHeader ? '355px' : '300px')};
     .ant-table {
       & > .ant-table-container {
         & > .ant-table-content {
@@ -27,6 +28,7 @@ export const StyledTable = styled(Table)`
               }
             }
             & > .ant-table-tbody {
+              min-height: 300px;
               background: ${themeToken['gray-10']};
               color: ${themeToken.colorWhite};
               & > tr {

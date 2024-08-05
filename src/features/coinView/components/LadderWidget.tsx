@@ -11,6 +11,7 @@ const { Text } = Typography;
 const StyledCard = styled(Card)`
   &.ant-card {
     width: 400px;
+    min-height: 840px;
     background: #434343;
     border-color: #595959;
     & > .ant-card-head {
