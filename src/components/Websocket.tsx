@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useCoinPairStore } from '@/stores/coinPair';
 
 const WebSocketComponent = () => {
-  const { selectedPair, setPairTicker, setPairAsks, setPairBids } = useCoinPairStore();
+  const { selectedPair, pairAsks, pairBids, setPairTicker, setPairAsks, setPairBids } = useCoinPairStore();
 
   useEffect(() => {
     const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
@@ -24,44 +24,35 @@ const WebSocketComponent = () => {
           setPairTicker(data);
         }
         if (data.type === 'snapshot') {
-          const asks = data.asks.slice(0, 10);
-          const bids = data.bids.slice(0, 10);
+          const asks = data.asks;
+          const bids = data.bids;
+          console.log('data.type = snapshot', { data, asks, bids });
           setPairAsks(asks);
           setPairBids(bids);
         }
         if (data.type === 'l2update') {
-          const filteredOrders: string[][] = data.changes.filter((el: string[]) => {
-            const [, , size] = el;
-            return +size > 0;
-          });
-          const asks = filteredOrders
-            .filter((el) => {
-              const [type] = el;
-              return type === 'sell';
-            })
-            .sort((a, b) => +a[1] - +b[1])
-            .slice(0, 10);
-          const bids = filteredOrders
-            .filter((el) => {
-              const [type] = el;
-              return type === 'buy';
-            })
-            .sort((a, b) => +b[1] - +a[1])
-            .slice(0, 10);
-          setPairAsks(
-            asks.map((el) => {
-              const [, price, size] = el;
-              return [price, size];
-            }),
-          );
-          setPairBids(
-            bids.map((el) => {
-              const [, price, size] = el;
-              return [price, size];
-            }),
-          );
+          const ordersData: { [key: string]: string[][] } = {
+            sell: pairAsks?.length ? [...pairAsks] : [],
+            buy: pairBids?.length ? [...pairBids] : [],
+          };
 
-          console.log('data.type = l2update', { data, filteredOrders, asks, bids });
+          data.changes.forEach((el: string[]) => {
+            const [type, price, size] = el;
+
+            const orderIndex = ordersData[type].findIndex((prevOrder) => prevOrder[1] === price);
+            if (orderIndex >= 0) {
+              ordersData[type][orderIndex][1] = size;
+            } else {
+              ordersData[type].push([price, size]);
+            }
+          });
+
+          ordersData['sell'] = ordersData['sell'].filter((el) => +el[1] > 0).sort((a, b) => +a[0] - +b[0]);
+          ordersData['buy'] = ordersData['buy'].filter((el) => +el[1] > 0).sort((a, b) => +b[0] - +a[0]);
+
+          setPairAsks(ordersData['sell']);
+          setPairBids(ordersData['buy']);
+          console.log('data.type = l2update', { data, newAsks: ordersData['sell'], newBids: ordersData['buy'] });
         }
       };
 

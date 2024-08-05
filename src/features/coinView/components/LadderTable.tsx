@@ -54,7 +54,7 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
   return (
     <StyledTable
       columns={tableColumns}
-      dataSource={dataSource}
+      dataSource={dataSource?.slice(0, 10)}
       pagination={false}
       components={components}
       showHeader={showHeader}
