@@ -12,7 +12,15 @@ interface CoinPairState {
   setPairAsks: (pairAsks: string[][] | null) => void;
   pairBids: string[][] | null;
   setPairBids: (pairBids: string[][] | null) => void;
+  resetState: () => void;
 }
+
+const initialState = {
+  selectedPair: null,
+  pairTicker: null,
+  pairAsks: null,
+  pairBids: null,
+};
 
 export const useCoinPairStore = create<CoinPairState>()(
   devtools(
@@ -26,6 +34,7 @@ export const useCoinPairStore = create<CoinPairState>()(
         setPairAsks: (pairAsks) => set(() => ({ pairAsks })),
         pairBids: null,
         setPairBids: (pairBids) => set(() => ({ pairBids })),
+        resetState: () => set(() => initialState),
       }),
       { name: 'coinPairStore' },
     ),

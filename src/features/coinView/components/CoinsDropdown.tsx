@@ -6,11 +6,11 @@ import { useCoinPairStore } from '@/stores/coinPair';
 import { coinsArr } from '../utils/coinsArr';
 
 function CoinsDropdown() {
-  const { selectedPair, setSelectedPair, setPairTicker } = useCoinPairStore();
+  const { selectedPair, setSelectedPair, resetState } = useCoinPairStore();
 
   const handleCoinSelect = (value: unknown) => {
+    resetState();
     setSelectedPair(value as string);
-    setPairTicker(null);
   };
 
   useEffect(() => {
