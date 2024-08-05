@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { useCoinPairStore } from '@/stores/coinPair';
 import { StyledTable } from '@/lib/theme/components/Table';
+import { skeletonsLoading } from '@/utils/skeletonsLoading';
 
 import { getRowStyle } from '../utils/getRowStyle';
 import { ladderTableColumns } from '../utils/ladderTableColumns';
@@ -14,7 +15,6 @@ type Props = {
 
 function LadderTable({ type, dataArr, showHeader = true }: Props) {
   const { pairTicker } = useCoinPairStore();
-  const tableColumns = ladderTableColumns(type);
 
   const dataSource = useMemo(() => {
     if (pairTicker?.last_size) {
@@ -32,6 +32,7 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
       });
     } else return [];
   }, [dataArr, pairTicker?.last_size]);
+  const tableColumns = ladderTableColumns(type, dataSource?.length === 0);
 
   const components = {
     body: {
@@ -41,7 +42,8 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
           <tr
             {...restProps}
             style={{
-              background: getRowStyle(record, type),
+              //* if record type is not string means it's the dummy data for skeleton
+              background: typeof record === 'string' ? getRowStyle(record, type) : '',
             }}
           >
             {children}
@@ -54,7 +56,7 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
   return (
     <StyledTable
       columns={tableColumns}
-      dataSource={dataSource?.slice(0, 10)}
+      dataSource={dataSource?.length === 0 ? skeletonsLoading(10) : dataSource?.slice(0, 10)}
       pagination={false}
       components={components}
       showHeader={showHeader}

@@ -4,20 +4,26 @@ import type { ColumnsType } from 'antd/es/table';
 import { formatNumber } from '@/utils/formatNumbers';
 import themeToken from '@lib/theme/tokens';
 import type { Order } from '@/types';
+import withLoadingSkeleton from '@/components/HOCs/withLoadingSkeleton';
 
 const { Text } = Typography;
 
-export const ladderTableColumns = (type: 'bids' | 'asks'): ColumnsType<Order | Record<string, number>> => [
+export const ladderTableColumns = (
+  type: 'bids' | 'asks',
+  isLoading: boolean,
+): ColumnsType<Order | Record<string, number>> => [
   {
     title: 'Market Size',
     dataIndex: 'market_size',
-    render: (val: number) => formatNumber(val),
+    render: withLoadingSkeleton(isLoading, (val: number) => formatNumber(val)),
+
     width: 140,
   },
   {
     title: 'Price (USD)',
     dataIndex: 'price',
-    render: (val: number) => (
+
+    render: withLoadingSkeleton(isLoading, (val: number) => (
       <Text
         style={{
           color: type === 'bids' ? themeToken['green-7'] : themeToken['red-7'],
@@ -25,13 +31,13 @@ export const ladderTableColumns = (type: 'bids' | 'asks'): ColumnsType<Order | R
       >
         {formatNumber(val)}
       </Text>
-    ),
+    )),
     width: 100,
   },
   {
     title: 'My Size',
     dataIndex: 'my_size',
-    render: (val: number) => formatNumber(val),
+    render: withLoadingSkeleton(isLoading, (val: number) => formatNumber(val)),
     width: 100,
   },
 ];
