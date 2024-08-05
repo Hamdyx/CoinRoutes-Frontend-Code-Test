@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Brush, ResponsiveContainer, Legend } from 'recharts';
+import dayjs from 'dayjs';
 
 import themeToken from '@lib/theme/tokens';
 import { useCoinPairStore } from '@/stores/coinPair';
@@ -46,7 +47,7 @@ function ChartWidget() {
     <ResponsiveContainer width="100%" height={800}>
       <LineChart width={500} height={800} data={dataArr}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="name" tickFormatter={(value: string) => dayjs(value).format('hh:mm:ss')} />
         <YAxis domain={[minPrice, maxPrice]} />
         <Tooltip />
         <Line type="monotone" dataKey="bids" stroke={themeToken.green} fill={themeToken.green} strokeWidth={3} />
