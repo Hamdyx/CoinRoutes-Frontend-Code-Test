@@ -40,6 +40,8 @@ function ChartWidget() {
           },
         ]);
       }
+    } else {
+      setDataArr([]);
     }
   }, [pairTicker?.time]);
 
