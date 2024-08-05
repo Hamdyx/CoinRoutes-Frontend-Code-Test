@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useCoinPairStore } from '@/stores/coinPair';
 
 const WebSocketComponent = () => {
-  const { selectedPair, setPairTicker } = useCoinPairStore();
+  const { selectedPair, setPairTicker, setPairAsks, setPairBids } = useCoinPairStore();
 
   useEffect(() => {
     const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
@@ -20,13 +20,17 @@ const WebSocketComponent = () => {
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log('JSON.parse', { event, data });
         if (data.type === 'ticker') {
-          console.log('data.type = ticker', { data });
           setPairTicker(data);
         }
-        if (data.type === 'snapchot') {
-          console.log('data.type = snapchot', { data });
+        if (data.type === 'snapshot') {
+          const asks = data.asks.slice(0, 10);
+          const bids = data.bids.slice(0, 10);
+          setPairAsks(asks);
+          setPairBids(bids);
+        }
+        if (data.type === 'l2update') {
+          console.log('data.type = l2update', { data });
         }
       };
 

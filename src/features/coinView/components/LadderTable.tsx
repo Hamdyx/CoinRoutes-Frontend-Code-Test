@@ -1,16 +1,37 @@
+import { useMemo } from 'react';
+
+import { useCoinPairStore } from '@/stores/coinPair';
 import { StyledTable } from '@/lib/theme/components/Table';
 
-import { buyOrders } from '../utils/orderBook';
 import { getRowStyle } from '../utils/getRowStyle';
 import { ladderTableColumns } from '../utils/ladderTableColumns';
 
 type Props = {
   type: 'bids' | 'asks';
+  dataArr: string[] | null;
   showHeader?: boolean;
 };
 
-function LadderTable({ type, showHeader = true }: Props) {
+function LadderTable({ type, dataArr, showHeader = true }: Props) {
+  const { pairTicker } = useCoinPairStore();
   const tableColumns = ladderTableColumns(type);
+
+  const dataSource = useMemo(() => {
+    if (pairTicker?.last_size) {
+      return dataArr?.map((el, i) => {
+        const [price, market_size] = el;
+
+        return {
+          // * sets the key as the percentage to the total size to style the row background
+          // * add the index to the key to keep it unique
+          key: `${i}-${+market_size / +pairTicker?.last_size}`,
+          market_size,
+          price,
+          my_size: 0,
+        };
+      });
+    } else return [];
+  }, [dataArr, pairTicker?.last_size]);
 
   const components = {
     body: {
@@ -33,10 +54,9 @@ function LadderTable({ type, showHeader = true }: Props) {
   return (
     <StyledTable
       columns={tableColumns}
-      dataSource={buyOrders}
+      dataSource={dataSource}
       pagination={false}
       components={components}
-      rowKey={(record) => record.percentage}
       showHeader={showHeader}
     />
   );
