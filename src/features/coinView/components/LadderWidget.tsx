@@ -1,31 +1,18 @@
-import { Card, Typography } from 'antd';
-import styled from 'styled-components';
+import { Typography } from 'antd';
 
 import { useCoinPairStore } from '@/stores/coinPair';
+import StyledCard from '@/components/shared/StyledCard';
 
 import LadderTable from './LadderTable';
 import { StyledTextContainer } from './StyledTextContainer';
 
 const { Text } = Typography;
 
-const StyledCard = styled(Card)`
-  &.ant-card {
-    width: 400px;
-    min-height: 840px;
-    background: #434343;
-    border-color: #595959;
-    & > .ant-card-head {
-      text-align: start;
-      color: white;
-    }
-  }
-`;
-
 function LadderWidget() {
   const { pairAsks, pairBids } = useCoinPairStore();
 
   return (
-    <StyledCard title="Order Book">
+    <StyledCard title="Order Book" variant="secondary">
       <LadderTable type="asks" dataArr={pairAsks} />
       <StyledTextContainer gap={32}>
         <Text>USD Spread</Text>

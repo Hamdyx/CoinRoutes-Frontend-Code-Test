@@ -1,21 +1,9 @@
-import { Card, Divider, Flex, Skeleton, Typography } from 'antd';
-import styled from 'styled-components';
+import { Divider, Flex, Skeleton, Typography } from 'antd';
 
-import themeToken from '@lib/theme/tokens';
 import { formatNumber } from '@/utils/formatNumbers';
+import StyledCard from '@/components/shared/StyledCard';
 
 const { Title, Text } = Typography;
-
-const StyledCard = styled(Card)<{ background: 'green' | 'red' }>`
-  &.ant-card {
-    width: 400px;
-    & > .ant-card-head {
-      text-align: start;
-      background-color: ${(props) => themeToken[props.background]};
-      color: white;
-    }
-  }
-`;
 
 type Props = {
   cardTitle: string;
