@@ -8,7 +8,7 @@ import { ladderTableColumns } from '../utils/ladderTableColumns';
 
 type Props = {
   type: 'bids' | 'asks';
-  dataArr: string[] | null;
+  dataArr: string[][] | null;
   showHeader?: boolean;
 };
 

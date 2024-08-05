@@ -30,7 +30,38 @@ const WebSocketComponent = () => {
           setPairBids(bids);
         }
         if (data.type === 'l2update') {
-          console.log('data.type = l2update', { data });
+          const filteredOrders: string[][] = data.changes.filter((el: string[]) => {
+            const [, , size] = el;
+            return +size > 0;
+          });
+          const asks = filteredOrders
+            .filter((el) => {
+              const [type] = el;
+              return type === 'sell';
+            })
+            .sort((a, b) => +a[1] - +b[1])
+            .slice(0, 10);
+          const bids = filteredOrders
+            .filter((el) => {
+              const [type] = el;
+              return type === 'buy';
+            })
+            .sort((a, b) => +b[1] - +a[1])
+            .slice(0, 10);
+          setPairAsks(
+            asks.map((el) => {
+              const [, price, size] = el;
+              return [price, size];
+            }),
+          );
+          setPairBids(
+            bids.map((el) => {
+              const [, price, size] = el;
+              return [price, size];
+            }),
+          );
+
+          console.log('data.type = l2update', { data, filteredOrders, asks, bids });
         }
       };
 

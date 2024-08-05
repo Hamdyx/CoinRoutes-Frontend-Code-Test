@@ -8,10 +8,10 @@ interface CoinPairState {
   setSelectedPair: (pair: string | null) => void;
   pairTicker: Ticker | null;
   setPairTicker: (pairTicker: Ticker | null) => void;
-  pairAsks: string[] | null;
-  setPairAsks: (pairAsks: string[] | null) => void;
-  pairBids: string[] | null;
-  setPairBids: (pairBids: string[] | null) => void;
+  pairAsks: string[][] | null;
+  setPairAsks: (pairAsks: string[][] | null) => void;
+  pairBids: string[][] | null;
+  setPairBids: (pairBids: string[][] | null) => void;
 }
 
 export const useCoinPairStore = create<CoinPairState>()(
