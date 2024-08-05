@@ -24,3 +24,9 @@ export interface Ticker {
   volume_24h: string;
   volume_30d: string;
 }
+
+export interface ChartData {
+  name: string;
+  asks: number;
+  bids: number;
+}
