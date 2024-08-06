@@ -45,10 +45,11 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
   return (
     <StyledTable
       columns={tableColumns}
-      dataSource={dataSource?.length === 0 ? skeletonsLoading(10) : dataSource?.slice(0, 10)}
+      dataSource={dataSource?.length === 0 ? skeletonsLoading(10) : dataSource?.slice(0, 15)}
       pagination={false}
       components={components}
       showHeader={showHeader}
+      scroll={{ y: 300 }}
     />
   );
 }

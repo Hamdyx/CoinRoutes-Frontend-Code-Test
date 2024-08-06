@@ -24,5 +24,8 @@ export const StyledContent = styled(Content)`
     padding-inline: ${themeToken.paddingLG}px;
     margin-inline: auto;
     width: 100%;
+    @media (max-width: ${themeToken.screenLG}px) {
+      padding: ${themeToken.padding}px;
+    }
   }
 `;

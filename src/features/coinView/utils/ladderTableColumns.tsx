@@ -38,6 +38,6 @@ export const ladderTableColumns = (
     title: 'My Size',
     dataIndex: 'my_size',
     render: withLoadingSkeleton(isLoading, (val: number) => formatNumber(val)),
-    width: 100,
+    width: 60,
   },
 ];

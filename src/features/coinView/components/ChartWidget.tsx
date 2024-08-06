@@ -5,8 +5,12 @@ import dayjs from 'dayjs';
 import themeToken from '@lib/theme/tokens';
 import { useCoinPairStore } from '@/stores/coinPair';
 import { ChartData } from '@/types';
+import { Grid } from 'antd';
+
+const { useBreakpoint } = Grid;
 
 function ChartWidget() {
+  const screens = useBreakpoint();
   const { pairTicker } = useCoinPairStore();
   const [dataArr, setDataArr] = useState<ChartData[]>([]);
 
@@ -43,8 +47,8 @@ function ChartWidget() {
   }, [pairTicker?.time]);
 
   return (
-    <ResponsiveContainer width="100%" height={800}>
-      <LineChart width={500} height={800} data={dataArr}>
+    <ResponsiveContainer width="100%" height={screens.md ? 800 : 500}>
+      <LineChart width={500} height={screens.md ? 800 : 500} data={dataArr}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" tickFormatter={(value: string) => dayjs(value).format('hh:mm:ss')} />
         <YAxis domain={[minPrice, maxPrice]} />

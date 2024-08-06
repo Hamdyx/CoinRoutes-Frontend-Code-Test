@@ -24,7 +24,7 @@ function LadderWidget() {
         <Text>{aggregation}</Text>
       </StyledTextContainer>
       <LadderTable type="bids" dataArr={aggregatedrBids} showHeader={false} />
-      <StyledTextContainer gap={32}>
+      <StyledTextContainer gap={32} align="center">
         <Text>Aggregation</Text>
         <StyledInputNumber
           min={0.01}
