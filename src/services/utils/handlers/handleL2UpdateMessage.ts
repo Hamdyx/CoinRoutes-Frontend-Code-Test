@@ -1,4 +1,5 @@
 import { aggregateOrders } from '@/utils/aggregateOrders';
+import { sortOrders } from '@/utils/sortOrders';
 import type { L2UpdateMessage, Order, OrdersSize } from '@/types';
 
 type Params = {
@@ -44,14 +45,12 @@ export const handleL2UpdateMessage = ({
     }
   });
 
-  ordersData['sell'].sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
-  ordersData['buy'].sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
-  const slicedAsksData = ordersData['sell'];
-  const slicedBidsDat = ordersData['buy'];
-  setPairAsks(ordersData['sell'].slice(0, 300));
-  setPairBids(ordersData['buy'].slice(0, 300));
+  const slicedAsksData = sortOrders(ordersData['sell'], 'sell').slice(0, 300);
+  const slicedBidsData = sortOrders(ordersData['buy'], 'buy').slice(0, 300);
+  setPairAsks(slicedAsksData);
+  setPairBids(slicedBidsData);
   const { orders: aggrAsks, totalSize: totalAsksSize } = aggregateOrders(slicedAsksData, aggregation);
-  const { orders: aggrBids, totalSize: totalBidsSize } = aggregateOrders(slicedBidsDat, aggregation);
+  const { orders: aggrBids, totalSize: totalBidsSize } = aggregateOrders(slicedBidsData, aggregation);
   setAggregatedAsks(aggrAsks);
   setAggregatedBids(aggrBids);
   setOrdersSize({
