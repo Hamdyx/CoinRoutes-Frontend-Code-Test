@@ -1,4 +1,4 @@
-import { getRowStyle } from '../utils/getRowStyle';
+import { getRowStyle } from "../../utils/getRowStyle";
 
 type Props = {
   children: JSX.Element;

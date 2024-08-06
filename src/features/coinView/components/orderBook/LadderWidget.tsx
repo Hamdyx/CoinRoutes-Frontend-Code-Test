@@ -2,9 +2,9 @@ import { Typography } from 'antd';
 
 import { useCoinPairStore } from '@/stores/coinPair';
 import StyledCard from '@/components/shared/StyledCard';
+import { StyledTextContainer } from '@/components/shared/StyledTextContainer';
 
 import LadderTable from './LadderTable';
-import { StyledTextContainer } from './StyledTextContainer';
 
 const { Text } = Typography;
 

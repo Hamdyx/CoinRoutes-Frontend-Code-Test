@@ -4,7 +4,7 @@ import { useCoinPairStore } from '@/stores/coinPair';
 import { StyledTable } from '@/lib/theme/components/Table';
 import { skeletonsLoading } from '@/utils/skeletonsLoading';
 
-import { ladderTableColumns } from '../utils/ladderTableColumns';
+import { ladderTableColumns } from '../../utils/ladderTableColumns';
 import LadderTableRow from './LadderTableRow';
 
 type Props = {
