@@ -1,4 +1,4 @@
-export interface Order {
+export interface TableOrder {
   key: number;
   market_size: number;
   price: number;
@@ -31,11 +31,13 @@ export interface ChartData {
   bids: number;
 }
 
+export type Order = [string, string];
+
 export interface SnapshotMessage {
   type: 'snapshot';
   product_id: string;
-  asks: [string, string][];
-  bids: [string, string][];
+  asks: Order[];
+  bids: Order[];
 }
 
 export interface L2UpdateMessage {

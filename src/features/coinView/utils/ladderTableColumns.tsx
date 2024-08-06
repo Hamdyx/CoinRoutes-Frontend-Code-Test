@@ -3,15 +3,15 @@ import type { ColumnsType } from 'antd/es/table';
 
 import { formatNumber } from '@/utils/formatNumbers';
 import themeToken from '@lib/theme/tokens';
-import type { Order } from '@/types';
 import withLoadingSkeleton from '@/components/HOCs/withLoadingSkeleton';
+import type { TableOrder } from '@/types';
 
 const { Text } = Typography;
 
 export const ladderTableColumns = (
   type: 'bids' | 'asks',
   isLoading: boolean,
-): ColumnsType<Order | Record<string, number>> => [
+): ColumnsType<TableOrder | Record<string, number>> => [
   {
     title: 'Market Size',
     dataIndex: 'market_size',
