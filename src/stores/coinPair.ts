@@ -4,8 +4,8 @@ import { devtools, persist } from 'zustand/middleware';
 import { Order, OrdersSize, Ticker } from '@/types';
 
 interface CoinPairState {
-  selectedPair: string | null;
-  setSelectedPair: (pair: string | null) => void;
+  selectedPair: string;
+  setSelectedPair: (pair: string) => void;
   pairTicker: Ticker | null;
   setPairTicker: (pairTicker: Ticker | null) => void;
   pairAsks: Order[] | null;
@@ -27,7 +27,7 @@ interface CoinPairState {
 }
 
 const initialState = {
-  selectedPair: null,
+  selectedPair: 'BTC-USD',
   pairTicker: null,
   pairAsks: null,
   pairBids: null,
@@ -41,7 +41,7 @@ export const useCoinPairStore = create<CoinPairState>()(
   devtools(
     persist(
       (set) => ({
-        selectedPair: null,
+        selectedPair: 'BTC-USD',
         setSelectedPair: (selectedPair) => set(() => ({ selectedPair })),
         pairTicker: null,
         setPairTicker: (pairTicker) => set(() => ({ pairTicker })),
