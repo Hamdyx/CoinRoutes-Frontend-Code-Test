@@ -12,6 +12,8 @@ interface CoinPairState {
   setPairAsks: (pairAsks: string[][] | null) => void;
   pairBids: string[][] | null;
   setPairBids: (pairBids: string[][] | null) => void;
+  aggregation: number | null;
+  setAggregation: (aggregation: number | null) => void;
   resetState: () => void;
 }
 
@@ -35,6 +37,8 @@ export const useCoinPairStore = create<CoinPairState>()(
         pairBids: null,
         setPairBids: (pairBids) => set(() => ({ pairBids })),
         resetState: () => set(() => initialState),
+        aggregation: null,
+        setAggregation: (aggregation) => set(() => ({ aggregation })),
       }),
       { name: 'coinPairStore' },
     ),
