@@ -6,7 +6,18 @@ import type { WebSocketData } from '@/types';
 import { handleL2UpdateMessage, handleSnapshotMessage, handleTickerMessage } from './utils';
 
 const WebSocketComponent = () => {
-  const { selectedPair, pairAsks, pairBids, setPairTicker, setPairAsks, setPairBids } = useCoinPairStore();
+  const {
+    selectedPair,
+    pairAsks,
+    pairBids,
+    setPairTicker,
+    setPairAsks,
+    setPairBids,
+    aggregation,
+    setAggregatedAsks,
+    setAggregatedBids,
+    setOrdersSize,
+  } = useCoinPairStore();
 
   useEffect(() => {
     const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
@@ -30,7 +41,17 @@ const WebSocketComponent = () => {
           handleSnapshotMessage({ data, setPairAsks, setPairBids });
         }
         if (data.type === 'l2update') {
-          handleL2UpdateMessage({ data, pairAsks, pairBids, setPairAsks, setPairBids });
+          handleL2UpdateMessage({
+            data,
+            pairAsks,
+            pairBids,
+            setPairAsks,
+            setPairBids,
+            aggregation,
+            setAggregatedAsks,
+            setAggregatedBids,
+            setOrdersSize,
+          });
         }
       };
 

@@ -1,9 +1,12 @@
+import { AggregatedOrders, Order } from '@/types';
+
 import { roundPrice } from './roundPrice';
 
-export const aggregateOrders = (orders: [string, string][], aggregator: number): [string, string][] => {
+export const aggregateOrders = (orders: Order[], aggregator: number): AggregatedOrders => {
   const aggregated: { [price: string]: number } = {};
-
+  let totalSize = 0;
   orders.forEach(([price, size]) => {
+    totalSize += parseFloat(size);
     const roundedPrice = roundPrice(parseFloat(price), aggregator).toFixed(2);
     if (aggregated[roundedPrice]) {
       aggregated[roundedPrice] += parseFloat(size);
@@ -12,5 +15,8 @@ export const aggregateOrders = (orders: [string, string][], aggregator: number):
     }
   });
 
-  return Object.entries(aggregated).map(([price, size]) => [price, size.toFixed(8)]);
+  return {
+    orders: Object.entries(aggregated).map(([price, size]) => [price, size.toFixed(8)]),
+    totalSize,
+  };
 };

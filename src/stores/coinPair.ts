@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import { Order, Ticker } from '@/types';
+import { Order, OrdersSize, Ticker } from '@/types';
 
 interface CoinPairState {
   selectedPair: string | null;
@@ -18,6 +18,11 @@ interface CoinPairState {
   setAggregatedAsks: (aggregatedAsks: Order[] | null) => void;
   aggregatedrBids: Order[] | null;
   setAggregatedBids: (aggregatedrBids: Order[] | null) => void;
+  ordersSize: {
+    asks: number;
+    bids: number;
+  } | null;
+  setOrdersSize: (ordersSize: OrdersSize | null) => void;
   resetState: () => void;
 }
 
@@ -27,8 +32,9 @@ const initialState = {
   pairAsks: null,
   pairBids: null,
   aggregation: 0.01,
-  aggregatedAsks:null,
-  aggregatedrBids:null,
+  aggregatedAsks: null,
+  aggregatedrBids: null,
+  ordersSize: null,
 };
 
 export const useCoinPairStore = create<CoinPairState>()(
@@ -49,6 +55,8 @@ export const useCoinPairStore = create<CoinPairState>()(
         setAggregatedAsks: (aggregatedAsks) => set(() => ({ aggregatedAsks })),
         aggregatedrBids: null,
         setAggregatedBids: (aggregatedrBids) => set(() => ({ aggregatedrBids })),
+        ordersSize: null,
+        setOrdersSize: (ordersSize) => set(() => ({ ordersSize })),
         resetState: () => set(() => initialState),
       }),
       { name: 'coinPairStore' },
