@@ -27,6 +27,9 @@ const StyledCard = styled(Card)<StyledCardProps>`
     min-height: ${(props) => (props.variant === 'secondary' ? '840px' : 'auto')};
     background-color: ${(props) => getBackgroundColor(props)};
     border-color: ${(props) => getBorderColor(props)};
+    @media (max-width: ${themeToken.screenMD}px) {
+      width: 100%;
+    }
 
     & > .ant-card-head {
       text-align: start;

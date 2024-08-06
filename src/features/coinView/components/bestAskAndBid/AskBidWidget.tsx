@@ -1,12 +1,16 @@
-import { Flex } from 'antd';
-import AskBidCard from './AskBidCard';
+import { Flex, Grid } from 'antd';
 import { useCoinPairStore } from '@/stores/coinPair';
 
+import AskBidCard from './AskBidCard';
+
+const { useBreakpoint } = Grid;
+
 function AskBidWidget() {
+  const screens = useBreakpoint();
   const { pairTicker } = useCoinPairStore();
 
   return (
-    <Flex gap={8}>
+    <Flex gap={8} vertical={!screens.sm}>
       <AskBidCard
         cardTitle="Best Bid"
         price={pairTicker?.best_bid}
