@@ -23,7 +23,7 @@ const getBorderColor = (props: StyledCardProps) => {
 
 const StyledCard = styled(Card)<StyledCardProps>`
   &.ant-card {
-    width: 400px;
+    width: ${(props) => (props.variant === 'secondary' ? '350px' : '400px')};
     min-height: ${(props) => (props.variant === 'secondary' ? '840px' : 'auto')};
     background-color: ${(props) => getBackgroundColor(props)};
     border-color: ${(props) => getBorderColor(props)};
@@ -35,6 +35,9 @@ const StyledCard = styled(Card)<StyledCardProps>`
       text-align: start;
       background-color: ${(props) => (props.background ? themeToken[props.background] : 'initial')};
       color: white;
+    }
+    & > .ant-card-body {
+      padding: ${(props) => (props.variant === 'secondary' ? '16px' : '24px')};
     }
   }
 `;

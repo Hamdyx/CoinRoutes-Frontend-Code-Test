@@ -10,7 +10,7 @@ const { useBreakpoint } = Grid;
 function CoinView() {
   const screens = useBreakpoint();
   return (
-    <Flex gap={8} vertical>
+    <Flex gap={12} vertical>
       <CoinsDropdown />
       <AskBidWidget />
       <Flex gap={16} vertical={!screens.md}>
