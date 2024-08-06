@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { useCoinPairStore } from '@/stores/coinPair';
+import type { WebSocketData } from '@/types';
 
 import { handleL2UpdateMessage, handleSnapshotMessage, handleTickerMessage } from './utils';
 
@@ -21,7 +22,7 @@ const WebSocketComponent = () => {
       };
 
       ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+        const data: WebSocketData = JSON.parse(event.data);
         if (data.type === 'ticker') {
           handleTickerMessage({ data, setPairTicker });
         }

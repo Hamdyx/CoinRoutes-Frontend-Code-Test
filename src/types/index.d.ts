@@ -18,7 +18,7 @@ export interface Ticker {
   product_id: string;
   sequence: number;
   side: 'sell' | 'buy';
-  time: '2024-08-04T23:12:44.409400Z';
+  time: string;
   trade_id: number;
   type: 'ticker';
   volume_24h: string;
@@ -30,3 +30,18 @@ export interface ChartData {
   asks: number;
   bids: number;
 }
+
+export interface SnapshotMessage {
+  type: 'snapshot';
+  product_id: string;
+  asks: [string, string][];
+  bids: [string, string][];
+}
+
+export interface L2UpdateMessage {
+  type: 'l2update';
+  product_id: string;
+  changes: [string, string, string][];
+}
+
+export type WebSocketData = TickerMessage | SnapshotMessage | L2UpdateMessage;

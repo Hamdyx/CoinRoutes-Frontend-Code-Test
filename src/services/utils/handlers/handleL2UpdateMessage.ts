@@ -1,5 +1,7 @@
+import type { L2UpdateMessage } from '@/types';
+
 type Params = {
-  data: any;
+  data: L2UpdateMessage;
   pairAsks: string[][] | null;
   pairBids: string[][] | null;
   setPairAsks: (pairAsks: string[][] | null) => void;

@@ -1,7 +1,7 @@
 import type { Ticker } from '@/types';
 
 type Params = {
-  data: any;
+  data: Ticker;
   setPairTicker: (pairTicker: Ticker | null) => void;
 };
 

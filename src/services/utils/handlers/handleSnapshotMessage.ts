@@ -1,5 +1,7 @@
+import type { SnapshotMessage } from '@/types';
+
 type Params = {
-  data: any;
+  data: SnapshotMessage;
   setPairAsks: (pairAsks: string[][] | null) => void;
   setPairBids: (pairBids: string[][] | null) => void;
 };
