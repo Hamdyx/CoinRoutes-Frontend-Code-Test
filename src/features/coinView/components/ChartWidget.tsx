@@ -22,23 +22,20 @@ function ChartWidget() {
   useEffect(() => {
     if (pairTicker) {
       const { time, best_ask, best_bid } = pairTicker;
+      const newItem = {
+        name: time,
+        asks: +best_ask,
+        bids: +best_bid,
+      };
       if (!dataArr.length) {
-        setDataArr([
-          {
-            name: time,
-            asks: +best_ask,
-            bids: +best_bid,
-          },
-        ]);
+        setDataArr([newItem]);
       } else {
-        setDataArr((prev) => [
-          ...prev,
-          {
-            name: time,
-            asks: +best_ask,
-            bids: +best_bid,
-          },
-        ]);
+        setDataArr((prev) => {
+          const arr = [...prev];
+          arr.push(newItem);
+          if (arr.length > 100) arr.shift();
+          return arr;
+        });
       }
     } else {
       setDataArr([]);

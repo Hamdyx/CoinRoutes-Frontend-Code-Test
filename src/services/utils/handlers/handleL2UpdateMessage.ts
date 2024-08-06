@@ -1,15 +1,15 @@
-import type { L2UpdateMessage } from '@/types';
+import type { L2UpdateMessage, Order } from '@/types';
 
 type Params = {
   data: L2UpdateMessage;
-  pairAsks: string[][] | null;
-  pairBids: string[][] | null;
-  setPairAsks: (pairAsks: string[][] | null) => void;
-  setPairBids: (pairBids: string[][] | null) => void;
+  pairAsks: Order[] | null;
+  pairBids: Order[] | null;
+  setPairAsks: (pairAsks: Order[] | null) => void;
+  setPairBids: (pairBids: Order[] | null) => void;
 };
 
 export const handleL2UpdateMessage = ({ data, pairAsks, pairBids, setPairAsks, setPairBids }: Params) => {
-  const ordersData: { [key: string]: string[][] } = {
+  const ordersData: { [key: string]: Order[] } = {
     sell: pairAsks ? [...pairAsks] : [],
     buy: pairBids ? [...pairBids] : [],
   };
@@ -32,6 +32,6 @@ export const handleL2UpdateMessage = ({ data, pairAsks, pairBids, setPairAsks, s
   ordersData['sell'].sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
   ordersData['buy'].sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
 
-  setPairAsks(ordersData['sell']);
-  setPairBids(ordersData['buy']);
+  setPairAsks(ordersData['sell'].slice(0, 300));
+  setPairBids(ordersData['buy'].slice(0, 300));
 };
