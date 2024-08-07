@@ -61,7 +61,9 @@ const WebSocketComponent = () => {
       };
 
       ws.onclose = () => {
-        console.log('WebSocket connection closed');
+        //* resets bids & asks so it doesn't keep old data when aggregating prices
+        setPairAsks(null);
+        setPairBids(null);
       };
     }
 
