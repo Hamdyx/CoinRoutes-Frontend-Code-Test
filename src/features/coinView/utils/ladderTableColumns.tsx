@@ -15,7 +15,12 @@ export const ladderTableColumns = (
   {
     title: 'Market Size',
     dataIndex: 'market_size',
-    render: withLoadingSkeleton(isLoading, (val: number) => formatNumber(val)),
+    render: withLoadingSkeleton(isLoading, (val: number) =>
+      formatNumber(val, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 8,
+      }),
+    ),
 
     width: 140,
   },
