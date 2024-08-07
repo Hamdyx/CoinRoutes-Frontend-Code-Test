@@ -8,7 +8,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
-    'airbnb',
     'airbnb-typescript',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -39,5 +38,8 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-non-null-assertion': 'warn',
+    '@typescript-eslint/consistent-type-definitions': 'warn',
+    '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+    '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
   },
 };

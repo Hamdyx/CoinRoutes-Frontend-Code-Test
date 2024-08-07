@@ -3,7 +3,7 @@ import { AggregatedOrders, Order } from '@/types';
 import { roundPrice } from './roundPrice';
 
 export const aggregateOrders = (orders: Order[], aggregator: number): AggregatedOrders => {
-  const aggregated: { [price: string]: number } = {};
+  const aggregated: Record<string, number> = {};
   let totalSize = 0;
   orders.forEach(([price, size]) => {
     totalSize += parseFloat(size);

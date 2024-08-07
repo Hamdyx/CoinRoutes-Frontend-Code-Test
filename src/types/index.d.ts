@@ -46,7 +46,7 @@ export interface L2UpdateMessage {
   changes: [string, string, string][];
 }
 
-export type WebSocketData = TickerMessage | SnapshotMessage | L2UpdateMessage;
+export type WebSocketData = Ticker | SnapshotMessage | L2UpdateMessage;
 
 interface AggregatedOrders {
   orders: Order[];
