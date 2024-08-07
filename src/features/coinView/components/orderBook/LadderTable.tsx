@@ -32,7 +32,7 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
         };
       });
     } else return [];
-  }, [dataArr, ordersSize]);
+  }, [dataArr, ordersSize, type]);
 
   const tableColumns = ladderTableColumns(type, dataSource?.length === 0);
 

@@ -33,6 +33,7 @@ const WebSocketComponent = () => {
       };
 
       ws.onmessage = (event) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
         const data: WebSocketData = JSON.parse(event.data);
         if (data.type === 'ticker') {
           handleTickerMessage({ data, setPairTicker });
@@ -52,6 +53,7 @@ const WebSocketComponent = () => {
             setAggregatedBids,
             setOrdersSize,
           });
+          // ws.close();
         }
       };
 

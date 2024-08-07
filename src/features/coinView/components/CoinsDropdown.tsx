@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { StyledSelect } from '@lib/theme/components/Select';
 import { useCoinPairStore } from '@/stores/coinPair';
 
@@ -12,10 +10,6 @@ function CoinsDropdown() {
     resetState();
     setSelectedPair(value as string);
   };
-
-  useEffect(() => {
-    if (!selectedPair) setSelectedPair(coinsArr[0]);
-  }, []);
 
   return (
     <StyledSelect

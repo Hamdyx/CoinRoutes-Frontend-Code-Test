@@ -44,7 +44,7 @@ function ChartWidget() {
     } else {
       setDataArr([]);
     }
-  }, [pairTicker?.time]);
+  }, [pairTicker]);
 
   return (
     <ResponsiveContainer width="100%" height={screens.md ? 800 : 500}>
