@@ -53,7 +53,6 @@ const WebSocketComponent = () => {
             setAggregatedBids,
             setOrdersSize,
           });
-          // ws.close();
         }
       };
 
