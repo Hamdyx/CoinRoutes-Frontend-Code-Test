@@ -1,10 +1,10 @@
 import type { Order, SnapshotMessage } from '@/types';
 
-type Params = {
+interface Params {
   data: SnapshotMessage;
   setPairAsks: (pairAsks: Order[] | null) => void;
   setPairBids: (pairBids: Order[] | null) => void;
-};
+}
 
 export const handleSnapshotMessage = ({ data, setPairAsks, setPairBids }: Params) => {
   const { asks, bids } = data;

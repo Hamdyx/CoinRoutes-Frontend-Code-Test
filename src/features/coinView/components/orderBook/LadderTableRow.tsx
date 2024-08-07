@@ -1,9 +1,9 @@
-import { getRowStyle } from "../../utils/getRowStyle";
+import { getRowStyle } from '../../utils/getRowStyle';
 
-type Props = {
+interface Props {
   children: JSX.Element;
   'data-row-key': 'string';
-};
+}
 
 function LadderTableRow({ children, ...restProps }: Props) {
   const recordKey = restProps['data-row-key'];

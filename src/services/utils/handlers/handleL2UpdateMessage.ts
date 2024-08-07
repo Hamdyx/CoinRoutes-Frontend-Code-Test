@@ -2,7 +2,7 @@ import { aggregateOrders } from '@/utils/aggregateOrders';
 import { sortOrders } from '@/utils/sortOrders';
 import type { L2UpdateMessage, Order, OrdersSize } from '@/types';
 
-type Params = {
+interface Params {
   data: L2UpdateMessage;
   pairAsks: Order[] | null;
   pairBids: Order[] | null;
@@ -12,7 +12,7 @@ type Params = {
   setAggregatedAsks: (aggregatedAsks: Order[] | null) => void;
   setAggregatedBids: (aggregatedrBids: Order[] | null) => void;
   setOrdersSize: (ordersSize: OrdersSize | null) => void;
-};
+}
 
 export const handleL2UpdateMessage = ({
   data,
@@ -25,7 +25,7 @@ export const handleL2UpdateMessage = ({
   setAggregatedBids,
   setOrdersSize,
 }: Params) => {
-  const ordersData: { [key: string]: Order[] } = {
+  const ordersData: Record<string, Order[]> = {
     sell: pairAsks ? [...pairAsks] : [],
     buy: pairBids ? [...pairBids] : [],
   };
@@ -45,8 +45,8 @@ export const handleL2UpdateMessage = ({
     }
   });
 
-  const slicedAsksData = sortOrders(ordersData['sell'], 'sell').slice(0, 300);
-  const slicedBidsData = sortOrders(ordersData['buy'], 'buy').slice(0, 300);
+  const slicedAsksData = sortOrders(ordersData.sell, 'sell').slice(0, 300);
+  const slicedBidsData = sortOrders(ordersData.buy, 'buy').slice(0, 300);
   setPairAsks(slicedAsksData);
   setPairBids(slicedBidsData);
   const { orders: aggrAsks, totalSize: totalAsksSize } = aggregateOrders(slicedAsksData, aggregation);

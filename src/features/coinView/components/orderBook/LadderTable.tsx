@@ -8,11 +8,11 @@ import type { Order } from '@/types';
 import { ladderTableColumns } from '../../utils/ladderTableColumns';
 import LadderTableRow from './LadderTableRow';
 
-type Props = {
+interface Props {
   type: 'bids' | 'asks';
   dataArr: Order[] | null;
   showHeader?: boolean;
-};
+}
 
 function LadderTable({ type, dataArr, showHeader = true }: Props) {
   const { ordersSize } = useCoinPairStore();
@@ -32,7 +32,7 @@ function LadderTable({ type, dataArr, showHeader = true }: Props) {
         };
       });
     } else return [];
-  }, [dataArr, ordersSize]);
+  }, [dataArr, ordersSize, type]);
 
   const tableColumns = ladderTableColumns(type, dataSource?.length === 0);
 

@@ -6,10 +6,10 @@ import { CellSkeleton } from '../CellSkeleton';
 
 const { Title, Text } = Typography;
 
-type Props = {
+interface Props {
   value: string | number | undefined;
   valueTitle: string;
-};
+}
 
 function NumberValueContainer({ value, valueTitle }: Props) {
   return (

@@ -5,14 +5,14 @@ import NumberValueContainer from '@/components/shared/NumberValueContainer';
 
 const { useBreakpoint } = Grid;
 
-type Props = {
+interface Props {
   cardTitle: string;
   price: string | number | undefined;
   priceTitle: string;
   quantity: string | number | undefined;
   quantityTitle: string;
   background?: 'green' | 'red';
-};
+}
 
 function AskBidCard({ cardTitle, price, priceTitle, quantity, quantityTitle, background = 'green' }: Props) {
   const screens = useBreakpoint();

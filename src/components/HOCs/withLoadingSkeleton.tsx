@@ -5,7 +5,7 @@ function withLoadingSkeleton<T, R>(
   renderFunction: (value: T, record?: R) => JSX.Element | string | number,
 ) {
   const Cell = (value: T, record?: R): JSX.Element | string | number =>
-    isLoading ? <CellSkeleton /> : renderFunction(value, record) ?? '_';
+    isLoading ? <CellSkeleton /> : renderFunction(value, record);
 
   return Cell;
 }
