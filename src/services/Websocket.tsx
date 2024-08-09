@@ -32,6 +32,24 @@ const WebSocketComponent = () => {
     }
   }, [selectedPair]);
 
+  const handleChangePair = useCallback(() => {
+    if (ws.current) {
+      ws.current.send(
+        JSON.stringify({
+          type: 'unsubscribe',
+          channels: ['level2_batch', 'ticker_batch'],
+        }),
+      );
+      ws.current.send(
+        JSON.stringify({
+          type: 'subscribe',
+          product_ids: [selectedPair],
+          channels: ['level2_batch', 'ticker_batch'],
+        }),
+      );
+    }
+  }, [selectedPair]);
+
   const handleError = useCallback((event: Event) => {
     console.error('handleError', event);
   }, []);
@@ -87,14 +105,22 @@ const WebSocketComponent = () => {
   );
 
   useEffect(() => {
-    ws.current = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSING || ws.current.readyState === WebSocket.CLOSED) {
+      ws.current = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+    }
 
     return () => {
-      if (ws.current) {
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
         ws.current.close();
       }
     };
-  }, [selectedPair]);
+  }, []);
+
+  useEffect(() => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      handleChangePair();
+    }
+  }, [handleChangePair]);
 
   useEffect(() => {
     if (ws.current) {
