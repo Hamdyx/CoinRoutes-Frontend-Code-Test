@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { useCoinPairStore } from '@/stores/coinPair';
 import type { WebSocketData } from '@/types';
@@ -18,30 +18,44 @@ const WebSocketComponent = () => {
     setAggregatedBids,
     setOrdersSize,
   } = useCoinPairStore();
+  const ws = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
-    const ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
-    if (selectedPair) {
-      ws.onopen = () => {
-        ws.send(
-          JSON.stringify({
-            type: 'subscribe',
-            product_ids: [selectedPair],
-            channels: ['level2_batch', 'ticker_batch'],
-          }),
-        );
-      };
+  const handleOpen = useCallback(() => {
+    if (ws.current) {
+      ws.current.send(
+        JSON.stringify({
+          type: 'subscribe',
+          product_ids: [selectedPair],
+          channels: ['level2_batch', 'ticker_batch'],
+        }),
+      );
+    }
+  }, [selectedPair]);
 
-      ws.onmessage = (event) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
-        const data: WebSocketData = JSON.parse(event.data);
-        if (data.type === 'ticker') {
+  const handleError = useCallback((event: Event) => {
+    console.error('handleError', event);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setPairAsks(null);
+    setPairBids(null);
+  }, [setPairAsks, setPairBids]);
+
+  const handleMessage = useCallback(
+    (event: MessageEvent) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
+      const data: WebSocketData = JSON.parse(event.data);
+
+      switch (data.type) {
+        case 'ticker': {
           handleTickerMessage({ data, setPairTicker });
+          break;
         }
-        if (data.type === 'snapshot') {
+        case 'snapshot': {
           handleSnapshotMessage({ data, setPairAsks, setPairBids });
+          break;
         }
-        if (data.type === 'l2update') {
+        case 'l2update': {
           handleL2UpdateMessage({
             data,
             pairAsks,
@@ -53,24 +67,48 @@ const WebSocketComponent = () => {
             setAggregatedBids,
             setOrdersSize,
           });
+          break;
         }
-      };
+        default:
+          break;
+      }
+    },
+    [
+      pairAsks,
+      pairBids,
+      aggregation,
+      setPairTicker,
+      setPairAsks,
+      setPairBids,
+      setAggregatedAsks,
+      setAggregatedBids,
+      setOrdersSize,
+    ],
+  );
 
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
-
-      ws.onclose = () => {
-        //* resets bids & asks so it doesn't keep old data when aggregating prices
-        setPairAsks(null);
-        setPairBids(null);
-      };
-    }
+  useEffect(() => {
+    ws.current = new WebSocket('wss://ws-feed.exchange.coinbase.com');
 
     return () => {
-      ws.close();
+      if (ws.current) {
+        ws.current.close();
+      }
     };
   }, [selectedPair]);
+
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onopen = handleOpen;
+      ws.current.onerror = handleError;
+      ws.current.onclose = handleClose;
+    }
+  }, [handleOpen, handleError, handleClose]);
+
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onmessage = handleMessage;
+    }
+  }, [handleMessage]);
 
   return null;
 };
