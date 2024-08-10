@@ -19,10 +19,7 @@ interface CoinPairState {
   setAggregatedAsks: (aggregatedAsks: Order[] | null) => void;
   aggregatedBids: Order[] | null;
   setAggregatedBids: (aggregatedBids: Order[] | null) => void;
-  ordersSize: {
-    asks: number;
-    bids: number;
-  } | null;
+  ordersSize: OrdersSize | null;
   setOrdersSize: (ordersSize: OrdersSize | null) => void;
   resetState: () => void;
 }
