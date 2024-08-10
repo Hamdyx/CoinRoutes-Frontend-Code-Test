@@ -1,33 +1,19 @@
 import { aggregateOrders } from '@/utils/aggregateOrders';
 import { sortOrders } from '@/utils/sortOrders';
-import type { L2UpdateMessage, Order, OrdersSize } from '@/types';
+import type { L2UpdateMessage, Order, PairOrdersParams } from '@/types';
 
 interface Params {
   data: L2UpdateMessage;
   pairAsks: Order[] | null;
   pairBids: Order[] | null;
-  setPairAsks: (pairAsks: Order[] | null) => void;
-  setPairBids: (pairBids: Order[] | null) => void;
   aggregation: number;
-  setAggregatedAsks: (aggregatedAsks: Order[] | null) => void;
-  setAggregatedBids: (aggregatedrBids: Order[] | null) => void;
-  setOrdersSize: (ordersSize: OrdersSize | null) => void;
+  setPairOrders: ({ pairAsks, pairBids, aggregatedAsks, aggregatedBids, ordersSize }: PairOrdersParams) => void;
 }
 
-export const handleL2UpdateMessage = ({
-  data,
-  pairAsks,
-  pairBids,
-  setPairAsks,
-  setPairBids,
-  aggregation,
-  setAggregatedAsks,
-  setAggregatedBids,
-  setOrdersSize,
-}: Params) => {
+export const handleL2UpdateMessage = ({ data, pairAsks, pairBids, aggregation, setPairOrders }: Params) => {
   const ordersData: Record<string, Order[]> = {
-    sell: pairAsks ? [...pairAsks] : [],
-    buy: pairBids ? [...pairBids] : [],
+    sell: pairAsks ?? [],
+    buy: pairBids ?? [],
   };
 
   data.changes.forEach((el: string[]) => {
@@ -47,14 +33,16 @@ export const handleL2UpdateMessage = ({
 
   const slicedAsksData = sortOrders(ordersData.sell, 'sell').slice(0, 300);
   const slicedBidsData = sortOrders(ordersData.buy, 'buy').slice(0, 300);
-  setPairAsks(slicedAsksData);
-  setPairBids(slicedBidsData);
   const { orders: aggrAsks, totalSize: totalAsksSize } = aggregateOrders(slicedAsksData, aggregation);
   const { orders: aggrBids, totalSize: totalBidsSize } = aggregateOrders(slicedBidsData, aggregation);
-  setAggregatedAsks(aggrAsks.slice(0, 15));
-  setAggregatedBids(aggrBids.slice(0, 15));
-  setOrdersSize({
-    asks: totalAsksSize,
-    bids: totalBidsSize,
+  setPairOrders({
+    pairAsks: slicedAsksData,
+    pairBids: slicedBidsData,
+    aggregatedAsks: aggrAsks.slice(0, 15),
+    aggregatedBids: aggrBids.slice(0, 15),
+    ordersSize: {
+      asks: totalAsksSize,
+      bids: totalBidsSize,
+    },
   });
 };

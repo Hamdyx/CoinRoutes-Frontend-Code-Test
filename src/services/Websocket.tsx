@@ -6,18 +6,8 @@ import type { WebSocketData } from '@/types';
 import { handleL2UpdateMessage, handleSnapshotMessage, handleTickerMessage } from './utils';
 
 const WebSocketComponent = () => {
-  const {
-    selectedPair,
-    pairAsks,
-    pairBids,
-    setPairTicker,
-    setPairAsks,
-    setPairBids,
-    aggregation,
-    setAggregatedAsks,
-    setAggregatedBids,
-    setOrdersSize,
-  } = useCoinPairStore();
+  const { selectedPair, pairAsks, pairBids, setPairTicker, setPairAsks, setPairBids, aggregation, setPairOrders } =
+    useCoinPairStore();
   const ws = useRef<WebSocket | null>(null);
 
   const handleOpen = useCallback(() => {
@@ -78,12 +68,8 @@ const WebSocketComponent = () => {
             data,
             pairAsks,
             pairBids,
-            setPairAsks,
-            setPairBids,
             aggregation,
-            setAggregatedAsks,
-            setAggregatedBids,
-            setOrdersSize,
+            setPairOrders,
           });
           break;
         }
@@ -91,17 +77,7 @@ const WebSocketComponent = () => {
           break;
       }
     },
-    [
-      pairAsks,
-      pairBids,
-      aggregation,
-      setPairTicker,
-      setPairAsks,
-      setPairBids,
-      setAggregatedAsks,
-      setAggregatedBids,
-      setOrdersSize,
-    ],
+    [pairAsks, pairBids, aggregation, setPairTicker, setPairAsks, setPairBids, setPairOrders],
   );
 
   useEffect(() => {
