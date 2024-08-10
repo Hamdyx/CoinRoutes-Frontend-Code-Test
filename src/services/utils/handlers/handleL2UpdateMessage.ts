@@ -51,8 +51,8 @@ export const handleL2UpdateMessage = ({
   setPairBids(slicedBidsData);
   const { orders: aggrAsks, totalSize: totalAsksSize } = aggregateOrders(slicedAsksData, aggregation);
   const { orders: aggrBids, totalSize: totalBidsSize } = aggregateOrders(slicedBidsData, aggregation);
-  setAggregatedAsks(aggrAsks);
-  setAggregatedBids(aggrBids);
+  setAggregatedAsks(aggrAsks.slice(0, 15));
+  setAggregatedBids(aggrBids.slice(0, 15));
   setOrdersSize({
     asks: totalAsksSize,
     bids: totalBidsSize,
