@@ -56,3 +56,11 @@ interface OrdersSize {
   asks: number;
   bids: number;
 }
+
+interface PairOrdersParams {
+  pairAsks: Order[];
+  pairBids: Order[];
+  aggregatedAsks: Order[];
+  aggregatedBids: Order[];
+  ordersSize: OrdersSize;
+}

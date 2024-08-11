@@ -10,7 +10,7 @@ import LadderTable from './LadderTable';
 const { Text } = Typography;
 
 function LadderWidget() {
-  const { aggregation, setAggregation, aggregatedAsks, aggregatedrBids } = useCoinPairStore();
+  const { aggregation, setAggregation, aggregatedAsks, aggregatedBids } = useCoinPairStore();
 
   const handleAggregationChange = (value: number | string | null) => {
     setAggregation(value === null ? 0.01 : +value);
@@ -23,7 +23,7 @@ function LadderWidget() {
         <Text>USD Spread</Text>
         <Text>{aggregation}</Text>
       </StyledTextContainer>
-      <LadderTable type="bids" dataArr={aggregatedrBids} showHeader={false} />
+      <LadderTable type="bids" dataArr={aggregatedBids} showHeader={false} />
       <StyledTextContainer gap={32} align="center">
         <Text>Aggregation</Text>
         <StyledInputNumber
