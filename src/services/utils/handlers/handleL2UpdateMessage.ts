@@ -1,5 +1,4 @@
-import { aggregateOrders } from '@/utils/aggregateOrders';
-import { sortOrders } from '@/utils/sortOrders';
+import { processOrders } from '@/utils/processOrders';
 import type { L2UpdateMessage, Order, PairOrdersParams } from '@/types';
 
 interface Params {
@@ -11,35 +10,38 @@ interface Params {
 }
 
 export const handleL2UpdateMessage = ({ data, pairAsks, pairBids, aggregation, setPairOrders }: Params) => {
-  const ordersData: Record<string, Order[]> = {
-    sell: pairAsks ?? [],
-    buy: pairBids ?? [],
+  if (!data.changes.length) return;
+
+  const ordersData: Record<string, Map<string, string>> = {
+    sell: new Map(pairAsks?.map((order) => [order[0], order[1]]) ?? []),
+    buy: new Map(pairBids?.map((order) => [order[0], order[1]]) ?? []),
   };
 
-  data.changes.forEach((el: string[]) => {
-    const [type, price, size] = el;
-    const orderIndex = ordersData[type].findIndex((prevOrder) => prevOrder[0] === price);
-
-    if (orderIndex >= 0) {
-      if (parseFloat(size) > 0) {
-        ordersData[type][orderIndex][1] = size;
-      } else {
-        ordersData[type].splice(orderIndex, 1);
-      }
-    } else if (parseFloat(size) > 0) {
-      ordersData[type].push([price, size]);
+  data.changes.forEach(([type, price, size]) => {
+    const parsedSize = parseFloat(size);
+    if (parsedSize > 0) {
+      ordersData[type].set(price, size);
+    } else {
+      ordersData[type].delete(price);
     }
   });
 
-  const slicedAsksData = sortOrders(ordersData.sell, 'sell').slice(0, 300);
-  const slicedBidsData = sortOrders(ordersData.buy, 'buy').slice(0, 300);
-  const { orders: aggrAsks, totalSize: totalAsksSize } = aggregateOrders(slicedAsksData, aggregation);
-  const { orders: aggrBids, totalSize: totalBidsSize } = aggregateOrders(slicedBidsData, aggregation);
+  const {
+    sortedOrders: sortedAsks,
+    aggregatedOrders: aggregatedAsks,
+    totalSize: totalAsksSize,
+  } = processOrders(ordersData.sell, 'sell', aggregation);
+  const {
+    sortedOrders: sortedBids,
+    aggregatedOrders: aggregatedBids,
+    totalSize: totalBidsSize,
+  } = processOrders(ordersData.buy, 'buy', aggregation);
+
   setPairOrders({
-    pairAsks: slicedAsksData,
-    pairBids: slicedBidsData,
-    aggregatedAsks: aggrAsks.slice(0, 15),
-    aggregatedBids: aggrBids.slice(0, 15),
+    pairAsks: sortedAsks,
+    pairBids: sortedBids,
+    aggregatedAsks,
+    aggregatedBids,
     ordersSize: {
       asks: totalAsksSize,
       bids: totalBidsSize,
