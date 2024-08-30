@@ -1,9 +1,10 @@
 import { StyledSelect } from '@lib/theme/components/Select';
 import { useCoinPairStore } from '@/stores/coinPair';
 
-import { coinsArr } from '../utils/coinsArr';
+import { useGetCoins } from '../api/getCoins';
 
 function CoinsDropdown() {
+  const { data: coinsData, isLoading: isCoinsDataLoading } = useGetCoins({});
   const { selectedPair, setSelectedPair, resetState } = useCoinPairStore();
 
   const handleCoinSelect = (value: unknown) => {
@@ -14,8 +15,10 @@ function CoinsDropdown() {
   return (
     <StyledSelect
       defaultValue={selectedPair}
-      options={coinsArr.map((el) => ({ value: el, label: el }))}
+      options={coinsData?.map((el) => ({ value: el.id, label: el.id }))}
       onChange={handleCoinSelect}
+      loading={isCoinsDataLoading}
+      showSearch
     />
   );
 }

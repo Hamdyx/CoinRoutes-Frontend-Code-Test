@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Brush, ResponsiveContainer, Legend } from 'recharts';
 import dayjs from 'dayjs';
+import { Grid } from 'antd';
 
 import themeToken from '@lib/theme/tokens';
 import { useCoinPairStore } from '@/stores/coinPair';
 import { ChartData } from '@/types';
-import { Grid } from 'antd';
 
 const { useBreakpoint } = Grid;
 
 function ChartWidget() {
   const screens = useBreakpoint();
-  const { pairTicker } = useCoinPairStore();
+  const { aggregatedAsks, aggregatedBids } = useCoinPairStore();
   const [dataArr, setDataArr] = useState<ChartData[]>([]);
 
   const minPrice = useMemo(() => {
@@ -24,12 +24,13 @@ function ChartWidget() {
   }, [dataArr]);
 
   useEffect(() => {
-    if (pairTicker) {
-      const { time, best_ask, best_bid } = pairTicker;
+    if (aggregatedAsks && aggregatedBids) {
+      const [askPrice] = aggregatedAsks[0];
+      const [bidPrice] = aggregatedBids[0];
       const newItem = {
-        name: time,
-        asks: +best_ask,
-        bids: +best_bid,
+        name: dayjs(new Date()).format('hh:mm:ss'),
+        asks: +askPrice,
+        bids: +bidPrice,
       };
       if (!dataArr.length) {
         setDataArr([newItem]);
@@ -44,13 +45,13 @@ function ChartWidget() {
     } else {
       setDataArr([]);
     }
-  }, [pairTicker]);
+  }, [aggregatedAsks, aggregatedBids]);
 
   return (
     <ResponsiveContainer width="100%" height={screens.md ? 800 : 500}>
       <LineChart width={500} height={screens.md ? 800 : 500} data={dataArr}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tickFormatter={(value: string) => dayjs(value).format('hh:mm:ss')} />
+        <XAxis dataKey="name" />
         <YAxis domain={[minPrice, maxPrice]} />
         <Tooltip />
         <Line type="monotone" dataKey="bids" stroke={themeToken.green} fill={themeToken.green} strokeWidth={3} />
