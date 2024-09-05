@@ -24,7 +24,7 @@ function ChartWidget() {
   }, [dataArr]);
 
   useEffect(() => {
-    if (aggregatedAsks && aggregatedBids) {
+    if (aggregatedAsks?.length && aggregatedBids?.length) {
       const [askPrice] = aggregatedAsks[0];
       const [bidPrice] = aggregatedBids[0];
       const newItem = {
